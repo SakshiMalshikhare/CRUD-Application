@@ -1,0 +1,125 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Student {
+    private int id;
+    private String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}
+
+public class CRUDApplication {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        List<Student> students = new ArrayList<>();
+
+        while (true) {
+            System.out.println("CRUD Application");
+            System.out.println("1. Create");
+            System.out.println("2. Read");
+            System.out.println("3. Update");
+            System.out.println("4. Delete");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice (1/2/3/4/5): ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter student name: ");
+                    String newName = scanner.nextLine();
+                    int newId = students.size() + 1;
+                    students.add(new Student(newId, newName));
+                    System.out.println("Student added.");
+                    break;
+                case 2:
+                    if (students.isEmpty()) {
+                        System.out.println("No students available.");
+                    } else {
+                        System.out.println("Student List:");
+                        for (Student student : students) {
+                            System.out.println(student);
+                        }
+                    }
+                    break;
+                case 3:
+                    if (students.isEmpty()) {
+                        System.out.println("No students available.");
+                    } else {
+                        System.out.print("Enter student ID to update: ");
+                        int updateId = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+
+                        Student studentToUpdate = null;
+                        for (Student student : students) {
+                            if (student.getId() == updateId) {
+                                studentToUpdate = student;
+                                break;
+                            }
+                        }
+
+                        if (studentToUpdate != null) {
+                            System.out.print("Enter new name: ");
+                            String updatedName = scanner.nextLine();
+                            studentToUpdate = new Student(studentToUpdate.getId(), updatedName);
+                            System.out.println("Student updated.");
+                        } else {
+                            System.out.println("Student not found.");
+                        }
+                    }
+                    break;
+                case 4:
+                    if (students.isEmpty()) {
+                        System.out.println("No students available.");
+                    } else {
+                        System.out.print("Enter student ID to delete: ");
+                        int deleteId = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+
+                        Student studentToDelete = null;
+                        for (Student student : students) {
+                            if (student.getId() == deleteId) {
+                                studentToDelete = student;
+                                break;
+                            }
+                        }
+
+                        if (studentToDelete != null) {
+                            students.remove(studentToDelete);
+                            System.out.println("Student deleted.");
+                        } else {
+                            System.out.println("Student not found.");
+                        }
+                    }
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}
